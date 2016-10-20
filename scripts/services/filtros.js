@@ -1,8 +1,8 @@
 angular.module('app')
   .filter('sexo', function () {
   	var sexo = {
-  		1: 'Masculino',
-  		2: 'Femenino'
+  		'Male': 'Masculino',
+  		'Female': 'Femenino'
   	}
     return function (input) {
     	if (!input)

@@ -6,7 +6,7 @@ angular
     }
 
     this.data = function () {
-      return $http.get('./data/MOCK_DATA.json').then(extraerData);
+      return $http.get('./data/1000Datos.json').then(extraerData);
     }
 
     this.sexo = function () {
