@@ -111,27 +111,52 @@ angular
     ];
   }
 
-  var marker = null;
+  var map = null, marker = null, infowindow = null;
 
   $scope.localizar = function(row) {
 
     $scope.mostrarMapa = true;
 
-    console.log(row.Latitud, row.Longitud);
+    if (map == null) {
 
-    NgMap.getMap().then(function(map) {
-      console.log(map);
+      NgMap.getMap().then(function(_map) {
+        $scope.mostrarMapa = true;
+        map = _map;
+        localizar(row);
+      });
+
+    } else {
+
       $scope.mostrarMapa = true;
+      localizar(row);
+
+    }
+    
+  }
+
+  function localizar(row) {
+    var html = row.Nombre + ' ' + row.apellido;
+
+      // Inicializo el unico marker y el info window.
+      marker = marker == null ? new google.maps.Marker({title: html}) : marker;
+      infowindow = infowindow == null ? new google.maps.InfoWindow() : infowindow;
+
+      // Si ya existe el info window lo cierro.
+      if (infowindow != null) {
+        infowindow.close();     
+      }
+
+      google.maps.event.addListener(marker, 'click', function() {        
+        infowindow.setContent(html);
+        infowindow.open(map, marker);
+      });
 
       var latLng = new google.maps.LatLng(row.Latitud, row.Longitud);
-
-     /* marker = new google.maps.Marker({
-        title: "Hi marker "
-      });
+      
+      marker.setTitle(html);
       marker.setPosition(latLng);
-      marker.setMap(map)*/
-
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      marker.setMap(map);
       map.setCenter(latLng);
-    });
-  }
-})
+    }
+  });
