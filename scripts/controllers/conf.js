@@ -1,6 +1,6 @@
 angular
 .module('app')
-.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants) {
+.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants, NgMap) {
 
   var lista_de_paises = new Array();
 
@@ -15,6 +15,8 @@ angular
   $scope.gridOptions.enableFiltering = true;
   // Configuracion del idioma.
   i18nService.setCurrentLang('es');
+
+  $scope.mostrarMapa = false;
 
   data.data().then(function(rta){
       // Cargo los datos en la grilla.
@@ -74,33 +76,62 @@ angular
         {value: 'Male', label: 'Masculino'}
         ]
       },
-          //filtro de los datos
-          cellFilter: 'sexo'
-        },
-        {
-          field: 'ip_address', name: 'ip'
-        },
-        {
-          field: 'Fecha_nacimiento', name: 'fechaNacimiento', type: 'date', cellFilter: "date: 'dd-MM-yyyy'"
-        },
-        {
-          field: 'Pais', name: 'pais',
-          filter: {
-            type: uiGridConstants.filter.SELECT,
-            selectOptions: lista_de_paises
-          }
-        },
-        {
-          field: 'Tarjeta_credito', name: 'Tarjeta de credito'
-        },
-        {
-          field: 'Zona_horaria', name: 'Zona Horaria'
-        },
-        {
-          field: 'foto', 
-          name: 'foto', 
-          cellTemplate:'<div style="display:block; text-align: center;"><img width="30px" ng-src="{{grid.getCellValue(row, col)}}" lazy-src></div>'
-        }
-        ];
+      //filtro de los datos
+      cellFilter: 'sexo'
+    },
+    {
+      field: 'ip_address', name: 'ip'
+    },
+    {
+      field: 'Fecha_nacimiento', name: 'fechaNacimiento', type: 'date', cellFilter: "date: 'dd-MM-yyyy'"
+    },
+    {
+      field: 'Pais', name: 'pais',
+      filter: {
+        type: uiGridConstants.filter.SELECT,
+        selectOptions: lista_de_paises
       }
-    })
+    },
+    {
+      field: 'Tarjeta_credito', name: 'Tarjeta de credito'
+    },
+    {
+      field: 'Zona_horaria', name: 'Zona Horaria'
+    },
+    {
+      field: 'foto', 
+      name: 'foto', 
+      cellTemplate: '<div style="display:block; text-align: center;"><img width="30px" ng-src="{{grid.getCellValue(row, col)}}" lazy-src></div>'
+    },
+    {
+      field: 'boton',
+      name: 'boton',
+      cellTemplate: '<button ng-click="grid.appScope.localizar(row.entity)">Localizar</button>'
+    }
+    ];
+  }
+
+  var marker = null;
+
+  $scope.localizar = function(row) {
+
+    $scope.mostrarMapa = true;
+
+    console.log(row.Latitud, row.Longitud);
+
+    NgMap.getMap().then(function(map) {
+      console.log(map);
+      $scope.mostrarMapa = true;
+
+      var latLng = new google.maps.LatLng(row.Latitud, row.Longitud);
+
+     /* marker = new google.maps.Marker({
+        title: "Hi marker "
+      });
+      marker.setPosition(latLng);
+      marker.setMap(map)*/
+
+      map.setCenter(latLng);
+    });
+  }
+})
