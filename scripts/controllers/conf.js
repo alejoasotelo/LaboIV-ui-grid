@@ -1,10 +1,11 @@
 angular
 .module('app')
-.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants, NgMap) {
+.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants, NgMap, banderas) {
 
   var lista_de_paises = new Array();
 
   $scope.titulo = "Configuracion Campos";
+  $scope.usuario = {};
   // Objeto de configuracion de la grilla.
   $scope.gridOptions = {};
   $scope.gridOptions.paginationPageSizes = [25, 50, 75];
@@ -13,10 +14,22 @@ angular
   $scope.gridOptions.columnDefs = columnDefs();
   // Activo la busqueda en todos los campos.
   $scope.gridOptions.enableFiltering = true;
+
+
+  // Objeto de configuracion de la grilla.
+  $scope.gridAmigosOptions = {};
+  $scope.gridAmigosOptions.paginationPageSizes = [25, 50, 75];
+  // Configuracion de la paginacion
+  $scope.gridAmigosOptions.paginationPageSize = 25;
+  $scope.gridAmigosOptions.columnDefs = columnDefsAmigos();
+  // Activo la busqueda en todos los campos.
+  $scope.gridAmigosOptions.enableFiltering = true;
+
   // Configuracion del idioma.
   i18nService.setCurrentLang('es');
 
   $scope.mostrarMapa = false;
+  $scope.mostrarMapaAmigos = false;
 
   data.data().then(function(rta){
       // Cargo los datos en la grilla.
@@ -36,8 +49,6 @@ angular
       lista_de_paises.sort(function(a,b){return a.value > b.value ? 1 : (a.value == b.value ? 0 : -1);});
     });
 
-  console.log(uiGridConstants);
-
   function columnDefs () {
     return [  
     {
@@ -45,14 +56,6 @@ angular
       name: '#', 
       width: 45
     },
-    /*{ 
-      field: 'titulo', 
-      name: 'ocupacion',
-      filter:{
-        condition: uiGridConstants.filter.STARTS_WITH,
-        placeholder: 'comienza con...'
-      }
-    },*/
     {
       field: 'Nombre', 
       name: 'nombre', 
@@ -104,14 +107,37 @@ angular
       cellTemplate: '<div style="display:block; text-align: center;"><img width="30px" ng-src="{{grid.getCellValue(row, col)}}" lazy-src></div>'
     },
     {
-      field: 'boton',
-      name: 'boton',
-      cellTemplate: '<button ng-click="grid.appScope.localizar(row.entity)">Localizar</button>'
+      field: 'localizar',
+      name: 'Localizar',
+      cellTemplate: '<div style="display:block; text-align: center; padding-top: 4px;"><button ng-click="grid.appScope.localizar(row.entity)" class="btn btn-default btn-xs">Localizar</button></div>'
+    },
+    {
+      field: 'Amigos',
+      name: 'Amigos',
+      cellTemplate: '<div style="display:block; text-align: center; padding-top: 4px;"><button ng-click="grid.appScope.mostrarAmigos(row.entity)" class="btn btn-default btn-xs">Mostrar amigos</button></div>'
     }
     ];
   }
 
-  var map = null, marker = null, infowindow = null;
+  function columnDefsAmigos () {
+    return [
+    {
+      field: 'nombre', 
+      name: 'nombre', 
+      enableFiltering: false
+    },
+    {
+      field: 'edad', 
+      name: 'edad'
+    },
+    {
+      field: 'raza', 
+      name: 'raza'
+    }
+    ];
+  }
+
+  var map = null, mapAmigos = null, marker = null, markersAmigos = [], infowindow = null;
 
   $scope.localizar = function(row) {
 
@@ -158,5 +184,64 @@ angular
       marker.setAnimation(google.maps.Animation.BOUNCE);
       marker.setMap(map);
       map.setCenter(latLng);
+    }
+
+
+    $scope.mostrarAmigos = function(row) {
+      $scope.usuario.nombre = row.Nombre + ' ' + row.apellido;
+
+      $scope.gridAmigosOptions.data = row.Amigos;
+
+      if (mapAmigos == null) {
+        console.log('null');
+
+        NgMap.getMap().then(function(_map) {
+          mapAmigos = _map;
+          console.log('esaaaa');
+          console.log(mapAmigos);
+          localizarAmigos(row.Amigos);
+        });
+      } else {        
+        console.log('localizarAmigos');
+          localizarAmigos(row.Amigos);
+      }
+
+
+    }
+
+    function localizarAmigos (amigos) {
+
+      console.log(google);
+
+      $scope.mostrarMapaAmigos = false;
+
+      var len = markersAmigos.length;
+      if (len > 0) {
+        for(var i=0; i < len; i++) {
+          markersAmigos[i] = null;
+        }
+      }
+
+      len = amigos.length;
+
+      for (var i = 0; i < len; i++) {
+        var row = amigos[i];
+        var html = row.nombre;
+
+        // Inicializo el unico marker y el info window.
+        var _marker = new google.maps.Marker({title: html});
+        var latLng = new google.maps.LatLng(row.Latitud, row.Longitud);
+        
+        _marker.setTitle(html);
+        _marker.setPosition(latLng);
+        _marker.setMap(mapAmigos);
+        markersAmigos.push(_marker);
+        console.log(markersAmigos);
+      }
+
+      if (markersAmigos.length > 0) {
+        $scope.mostrarMapaAmigos = true;
+      }
+
     }
   });

@@ -4,8 +4,18 @@
 	ui-grid-pagination
 	ui-grid-resize-columns
 	></div>
+	
+	<h2 ng-if="gridAmigosOptions.data.length">Amigos de {{usuario.nombre}}</h2>
+	<div ng-if="gridAmigosOptions.data.length" ui-grid="gridAmigosOptions" class="myGrid"
+	ui-grid-pagination
+	ui-grid-resize-columns
+	></div>
 
 	<div ng-if="mostrarMapa" map-lazy-load="https://maps.google.com/maps/api/js">
+		<ng-map center="41,-87" zoom="5"></ng-map>
+	</div>
+
+	<div ng-if="mostrarMapaAmigos" map-lazy-load="https://maps.google.com/maps/api/js">
 		<ng-map center="41,-87" zoom="5"></ng-map>
 	</div>
 	<br>
