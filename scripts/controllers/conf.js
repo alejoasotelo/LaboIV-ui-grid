@@ -29,7 +29,6 @@ angular
   i18nService.setCurrentLang('es');
 
   $scope.mostrarMapa = false;
-  $scope.mostrarMapaAmigos = false;
 
   data.data().then(function(rta){
       // Cargo los datos en la grilla.
@@ -133,11 +132,19 @@ angular
     {
       field: 'raza', 
       name: 'raza'
+    },
+    {
+      field: 'Latitud', 
+      name: 'Latitud'
+    },
+    {
+      field: 'Longitud', 
+      name: 'Longitud'
     }
     ];
   }
 
-  var map = null, mapAmigos = null, marker = null, markersAmigos = [], infowindow = null;
+  var map = null, marker = null, infowindow = null;
 
   $scope.localizar = function(row) {
 
@@ -186,62 +193,11 @@ angular
       map.setCenter(latLng);
     }
 
-
     $scope.mostrarAmigos = function(row) {
       $scope.usuario.nombre = row.Nombre + ' ' + row.apellido;
 
       $scope.gridAmigosOptions.data = row.Amigos;
 
-      if (mapAmigos == null) {
-        console.log('null');
-
-        NgMap.getMap().then(function(_map) {
-          mapAmigos = _map;
-          console.log('esaaaa');
-          console.log(mapAmigos);
-          localizarAmigos(row.Amigos);
-        });
-      } else {        
-        console.log('localizarAmigos');
-          localizarAmigos(row.Amigos);
-      }
-
-
     }
 
-    function localizarAmigos (amigos) {
-
-      console.log(google);
-
-      $scope.mostrarMapaAmigos = false;
-
-      var len = markersAmigos.length;
-      if (len > 0) {
-        for(var i=0; i < len; i++) {
-          markersAmigos[i] = null;
-        }
-      }
-
-      len = amigos.length;
-
-      for (var i = 0; i < len; i++) {
-        var row = amigos[i];
-        var html = row.nombre;
-
-        // Inicializo el unico marker y el info window.
-        var _marker = new google.maps.Marker({title: html});
-        var latLng = new google.maps.LatLng(row.Latitud, row.Longitud);
-        
-        _marker.setTitle(html);
-        _marker.setPosition(latLng);
-        _marker.setMap(mapAmigos);
-        markersAmigos.push(_marker);
-        console.log(markersAmigos);
-      }
-
-      if (markersAmigos.length > 0) {
-        $scope.mostrarMapaAmigos = true;
-      }
-
-    }
   });

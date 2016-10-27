@@ -16,7 +16,13 @@ angular.module('app').service('banderas', function($http) {
 
 		return $http.get(base_url).then(function(r){
 
-			var len = r.data.Paises.length;
+			return r.data.Paises.map(function (p, a, b){
+
+				return {Bandera: p.Bandera, BanderaChica: p.BanderaChica}
+
+			});
+
+			/*var len = r.data.Paises.length;
 			var list_banderas = [];
 
 			for(var i=0; i < len; i++) {
@@ -30,15 +36,20 @@ angular.module('app').service('banderas', function($http) {
 				list_banderas.push(banderas);
 			}
 
-			return list_banderas;
+			return list_banderas;*/
 		});
 
 	}
 
-	this.traerNombre = function () {
+	this.traerNombres = function () {
 
 		return $http.get(base_url).then(function(r){
-			var len = r.data.Paises.length;
+
+			return r.data.Paises.map(function(a, b, c){
+				return {Nombre: a.Nombre};
+			});
+
+			/*var len = r.data.Paises.length;
 			var list_nombres = [];
 
 			for(var i=0; i < len; i++) {
@@ -51,16 +62,16 @@ angular.module('app').service('banderas', function($http) {
 				list_nombres.push(Nombre);
 			}
 
-			return list_nombres;
+			return list_nombres;*/
 		});
 
 	}
 
 	this.traerPais = function(pais) {
 
-		return $http.get(base_url+'/'+pais).then(function(pais) {
+		return $http.get(base_url+'/'+pais).then(function(r) {
 
-			return pais;
+			return r.data.length > 0 ? r.data[0] : [];
 
 		});
 

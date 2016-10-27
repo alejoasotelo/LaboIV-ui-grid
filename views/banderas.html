@@ -1,5 +1,13 @@
 <input type="text" ng-model="query">
 <button ng-click="buscar(query)">Buscar</button>
-<ul>
-	<li ng-repeat="r in results">{{r.Nombre}}</li>
-</ul>
+
+<div class="media" ng-repeat="r in results">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" ng-src="{{r.BanderaChica}}" width="80" alt="...">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{r.Nombre}}</h4>
+  </div>
+</div>
