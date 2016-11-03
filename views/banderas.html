@@ -1,13 +1,6 @@
 <input type="text" ng-model="query">
 <button ng-click="buscar(query)">Buscar</button>
-
-<div class="media" ng-repeat="r in results">
-  <div class="media-left">
-    <a href="#">
-      <img class="media-object" ng-src="{{r.BanderaChica}}" width="80" alt="...">
-    </a>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">{{r.Nombre}}</h4>
-  </div>
-</div>
+<button ng-click="resetear()">Limpiar</button>
+<br>
+<br>
+<div ui-grid="gridBanderas" class="myGrid" ui-grid-pagination ui-grid-resize-columns></div>

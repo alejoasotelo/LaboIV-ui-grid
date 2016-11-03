@@ -1,6 +1,6 @@
 angular
 .module('app')
-.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants, NgMap, banderas) {
+.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants, NgMap, banderas, factBanderas) {
 
   var lista_de_paises = new Array();
 

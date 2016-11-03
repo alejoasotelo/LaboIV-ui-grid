@@ -22,21 +22,6 @@ angular.module('app').service('banderas', function($http) {
 
 			});
 
-			/*var len = r.data.Paises.length;
-			var list_banderas = [];
-
-			for(var i=0; i < len; i++) {
-
-				var obj = r.data.Paises[i];
-				var banderas = {
-					Bandera: obj.Bandera,
-					BanderaChica: obj.BanderaChica,
-				};
-
-				list_banderas.push(banderas);
-			}
-
-			return list_banderas;*/
 		});
 
 	}
@@ -48,21 +33,7 @@ angular.module('app').service('banderas', function($http) {
 			return r.data.Paises.map(function(a, b, c){
 				return {Nombre: a.Nombre};
 			});
-
-			/*var len = r.data.Paises.length;
-			var list_nombres = [];
-
-			for(var i=0; i < len; i++) {
-
-				var obj = r.data.Paises[i];
-				var Nombre = {
-					Nombre: obj.Nombre
-				};
-
-				list_nombres.push(Nombre);
-			}
-
-			return list_nombres;*/
+			
 		});
 
 	}
