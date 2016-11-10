@@ -1,10 +1,15 @@
 <div>
+	<div class="banderas" style="margin-bottom: 12px;overflow: hidden;">
+		<div ng-repeat="b in banderas" style="margin-bottom: 12px; overflow: hidden; min-height: 130px;" class="col-xs-4 col-md-2" >
+			<utn-bandera url="{{b.BanderaChica}}" nombre="{{b.Nombre}}">
+		</div>
+	</div>
+
 	<utn-saludo></utn-saludo>
 
 	<div utn-saludo></div>
 
 	<div class="utn-saludo"></div>
-
 	<!-- utn-saludo -->
 	<mostrar-titulo></mostrar-titulo>
 
@@ -15,7 +20,7 @@
 	ui-grid-pagination
 	ui-grid-resize-columns
 	></div>
-	
+
 	<h2 ng-if="gridAmigosOptions.data.length">Amigos de {{usuario.nombre}}</h2>
 	<div ng-if="gridAmigosOptions.data.length" ui-grid="gridAmigosOptions" class="myGrid"
 	ui-grid-pagination

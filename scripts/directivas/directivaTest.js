@@ -6,7 +6,7 @@ angular.module('app')
 	return {
 		template: '<h1>Hola Mundo</h1>',
 		restrict: 'AECM',
-		replays: true
+		replace: true
 	}
 
 })
@@ -25,6 +25,20 @@ angular.module('app')
 	return {
 		templateUrl: 'scripts/directivas/utnTemplate.html',
 		restrict: 'E'
+	}
+
+})
+
+.directive('utnBandera', function (factBanderas) {
+
+	return {
+		restrict: 'E',
+		templateUrl: 'scripts/directivas/utnBandera.html',
+		scope: {
+			url: "@url",
+			nombre: "@nombre"
+		},
+		replace: true
 	}
 
 });

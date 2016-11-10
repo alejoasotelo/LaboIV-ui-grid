@@ -200,4 +200,12 @@ angular
 
     }
 
+    $scope.banderas = [];
+
+    factBanderas.traerTodo().then(function(banderas){
+
+      $scope.banderas = banderas;
+      console.log(banderas);
+    });
+
   });
