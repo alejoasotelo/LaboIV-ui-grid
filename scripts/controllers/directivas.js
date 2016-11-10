@@ -1,10 +1,10 @@
 angular
 .module('app')
-.controller('ConfCtrl', function($scope, data, i18nService, uiGridConstants, NgMap, banderas, factBanderas) {
+.controller('DirectivasCtrl', function($scope, data, i18nService, uiGridConstants, NgMap, factBanderas) {
 
   var lista_de_paises = new Array();
 
-  $scope.titulo = "Configuracion Campos";
+  $scope.titulo = "Directivas";
   $scope.usuario = {};
   // Objeto de configuracion de la grilla.
   $scope.gridOptions = {};

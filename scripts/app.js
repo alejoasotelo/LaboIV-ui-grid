@@ -24,10 +24,10 @@ angular
       templateUrl: 'views/paginada.html',
       controller:'PaginadaCtrl'
     })
-    .state('conf', {
-      url: '/conf',
-      templateUrl: 'views/config.html',
-      controller:'ConfCtrl'
+    .state('directivas', {
+      url: '/directivas',
+      templateUrl: 'views/directivas.html',
+      controller:'DirectivasCtrl'
     })
     .state('exportar', {
       url: '/exportar',
