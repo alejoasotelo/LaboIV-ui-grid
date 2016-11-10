@@ -36,7 +36,8 @@ angular.module('app')
 		templateUrl: 'scripts/directivas/utnBandera.html',
 		scope: {
 			url: "@url",
-			nombre: "@nombre"
+			nombre: "@nombre",
+			bandera: "=bandera"
 		},
 		replace: true
 	}
